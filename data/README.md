@@ -16,7 +16,7 @@ Below is an overview of where to find relevant files.
 
 ### Raw experiment data
 
-`gcb_test_data_*.csv`:
+`/experiment`:
 - Files containing responses to the combined assessment administered to participants in both the University and demographically representative sample.
 - Each of these files contains a different batch of participant data collected over several iterations.
 - Within each file, each row represents a response to a single question or item given by an individual participant.
@@ -24,7 +24,7 @@ Below is an overview of where to find relevant files.
 
 ### Post-experiment survey
 
-`gcb_survey_data_*.csv`:
+`/survey`:
 - Files containing responses to the post-experiment survey administered to participants in both the University and demographically representative sample.
 - Each of these files contains a different batch of participant data collected over several iterations.
 - Within each file, each row represents an individual participant's responses to all the survey items on a particular page (for example, those pertaining to prior mathematics education).
