@@ -179,9 +179,10 @@ accuracy_math_exp = glmer(
   family = 'binomial',
   data = data
 )
+summary(accuracy_math_exp)
 anova(accuracy_baseline, accuracy_math_exp, test = 'LRT')
 emmeans(accuracy_math_exp, 'math_sum')
-inv.logit(0.625) # NB: use inv.logit to get predicted performance for each level of math_sum
+inv.logit(0.971) # NB: use inv.logit to get predicted performance for each level of math_sum
 
 
 # Does this effect differ across sample populations?
@@ -195,6 +196,7 @@ accuracy_interaction_math_exp_sample = glmer(
   family = 'binomial',
   data = data
 )
+summary(accuracy_interaction_math_exp_sample)
 anova(accuracy_baseline_math_exp_sample, accuracy_interaction_math_exp_sample, test = 'LRT')
 
 
@@ -327,6 +329,7 @@ accuracy_graph_type = glmer(
   control = glmerControl(optimizer = 'optimx', optCtrl = list(method = 'nlminb')),
   data = data
 )
+summary(accuracy_graph_type)
 anova(accuracy_graph_type, accuracy_baseline, test = 'LRT')
 
 # Does performance vary by graph type on each assessment individually?
@@ -341,6 +344,7 @@ accuracy_graph_type_ggr = glmer(
   family = 'binomial',
   data = data %>% filter(origStudy == 'GGR'),
 )
+summary(accuracy_graph_type_ggr)
 anova(accuracy_baseline_ggr, accuracy_graph_type_ggr, test = 'LRT')
 
   # VLAT
@@ -355,55 +359,61 @@ accuracy_graph_type_vlat = glmer(
   control = glmerControl(optimizer = 'optimx', optCtrl = list(method = 'nlminb')),
   data = data %>% filter(origStudy == 'VLAT'),
 )
+summary(accuracy_graph_type_vlat)
 anova(accuracy_baseline_vlat, accuracy_graph_type_vlat, test = 'LRT')
 
 
 # Does effect of performance on graph type vary across samples (prolific, sona)?
   # Combined assessment
-accuracy_graph_type_sample = glmer(
-  accuracy ~ graphType * recruitmentPlatform + (1 | gameID),
-  family = 'binomial',
-  control = glmerControl(optimizer = 'bobyqa', optCtrl = list(maxfun = 100000)),
-  data = data
-)
 accuracy_graph_type_sample_baseline = glmer(
   accuracy ~ graphType + recruitmentPlatform + (1 | gameID),
   family = 'binomial',
   control = glmerControl(optimizer = 'bobyqa', optCtrl = list(maxfun = 100000)),
   data = data
 )
+accuracy_graph_type_sample = glmer(
+  accuracy ~ graphType * recruitmentPlatform + (1 | gameID),
+  family = 'binomial',
+  control = glmerControl(optimizer = 'bobyqa', optCtrl = list(maxfun = 100000)),
+  data = data
+)
+summary(accuracy_graph_type_sample)
 anova(accuracy_graph_type_sample, accuracy_graph_type_sample_baseline, test = 'LRT')
 emmeans(accuracy_graph_type_sample, pairwise ~ recruitmentPlatform) # larger effect for prolific sample?
 
   # GGR
-accuracy_graph_type_sample_ggr = glmer(
-  accuracy ~ graphType * recruitmentPlatform + (1 | gameID),
-  family = 'binomial',
-  data = data %>% filter(origStudy == 'GGR'),
-)
 accuracy_graph_type_sample_ggr_baseline = glmer(
   accuracy ~ graphType + recruitmentPlatform + (1 | gameID),
   family = 'binomial',
   data = data %>% filter(origStudy == 'GGR'),
 )
+accuracy_graph_type_sample_ggr = glmer(
+  accuracy ~ graphType * recruitmentPlatform + (1 | gameID),
+  family = 'binomial',
+  data = data %>% filter(origStudy == 'GGR'),
+)
+summary(accuracy_graph_type_sample_ggr)
 anova(accuracy_graph_type_sample_ggr, accuracy_graph_type_sample_ggr_baseline, test = 'LRT')
 emmeans(accuracy_graph_type_sample_ggr, pairwise ~ recruitmentPlatform) # larger effect for prolific sample?
 
   # VLAT
-accuracy_graph_type_sample_vlat = glmer(
-  accuracy ~ graphType * recruitmentPlatform + (1 | gameID),
-  family = 'binomial',
-  control = glmerControl(optimizer = 'bobyqa', optCtrl = list(maxfun = 100000)),
-  data = data %>% filter(origStudy == 'VLAT'),
-)
 accuracy_graph_type_sample_vlat_baseline = glmer(
   accuracy ~ graphType + recruitmentPlatform + (1 | gameID),
   family = 'binomial',
   control = glmerControl(optimizer = 'bobyqa', optCtrl = list(maxfun = 100000)),
   data = data %>% filter(origStudy == 'VLAT'),
 )
+accuracy_graph_type_sample_vlat = glmer(
+  accuracy ~ graphType * recruitmentPlatform + (1 | gameID),
+  family = 'binomial',
+  control = glmerControl(optimizer = 'bobyqa', optCtrl = list(maxfun = 100000)),
+  data = data %>% filter(origStudy == 'VLAT'),
+)
+summary(accuracy_graph_type_sample_vlat)
 anova(accuracy_graph_type_sample_vlat, accuracy_graph_type_sample_vlat_baseline, test = 'LRT')
 emmeans(accuracy_graph_type_sample_vlat, pairwise ~ recruitmentPlatform) # larger effect for prolific sample?
+
+
 
 
 # > FIGURE: Comparing performance across graph type ----
@@ -521,6 +531,7 @@ accuracy_question_type = glmer(
   control = glmerControl(optimizer = 'optimx', optCtrl = list(method = 'nlminb')),
   data = data
 )
+summary(accuracy_question_type)
 anova(accuracy_baseline, accuracy_question_type, test = 'LRT')
 
 
@@ -536,7 +547,10 @@ accuracy_question_type_ggr = glmer(
   family = 'binomial',
   data = data %>% filter(origStudy == 'GGR'),
 )
+summary(accuracy_question_type_ggr)
 anova(accuracy_baseline_ggr, accuracy_question_type_ggr, test = 'LRT')
+
+
 
   # VLAT
 accuracy_baseline_vlat = glmer(
@@ -550,6 +564,7 @@ accuracy_question_type_vlat = glmer(
   control = glmerControl(optimizer = 'Nelder_Mead'),
   data = data %>% filter(origStudy == 'VLAT'),
 )
+summary(accuracy_question_type_vlat)
 anova(accuracy_baseline_vlat, accuracy_question_type_vlat, test = 'LRT')
 
 
@@ -567,36 +582,39 @@ accuracy_question_type_sample = glmer(
   control = glmerControl(optimizer = 'bobyqa', optCtrl = list(maxfun = 100000)),
   data = data
 )
+summary(accuracy_question_type_sample)
 anova(accuracy_question_type_sample, accuracy_question_type_sample_baseline, test = 'LRT')
 emmeans(accuracy_question_type_sample, pairwise ~ recruitmentPlatform) # larger effect for prolific sample?
 
   # GGR
-accuracy_question_type_sample_ggr = glmer(
-  accuracy ~ origStudy_taskCategorization * recruitmentPlatform + (1 | gameID),
-  family = 'binomial',
-  data = data %>% filter(origStudy == 'GGR'),
-)
 accuracy_question_type_sample_ggr_baseline = glmer(
   accuracy ~ origStudy_taskCategorization + recruitmentPlatform + (1 | gameID),
   family = 'binomial',
   data = data %>% filter(origStudy == 'GGR'),
 )
+accuracy_question_type_sample_ggr = glmer(
+  accuracy ~ origStudy_taskCategorization * recruitmentPlatform + (1 | gameID),
+  family = 'binomial',
+  data = data %>% filter(origStudy == 'GGR'),
+)
+summary(accuracy_question_type_sample_ggr)
 anova(accuracy_question_type_sample_ggr, accuracy_question_type_sample_ggr_baseline, test = 'LRT')
 emmeans(accuracy_question_type_sample_ggr, pairwise ~ recruitmentPlatform) # larger effect for prolific sample?
 
   # VLAT
-accuracy_question_type_sample_vlat = glmer(
-  accuracy ~ origStudy_taskCategorization * recruitmentPlatform + (1 | gameID),
-  family = 'binomial',
-  control = glmerControl(optimizer = 'bobyqa', optCtrl = list(maxfun = 100000)),
-  data = data %>% filter(origStudy == 'VLAT'),
-)
 accuracy_question_type_sample_vlat_baseline = glmer(
   accuracy ~ origStudy_taskCategorization + recruitmentPlatform + (1 | gameID),
   family = 'binomial',
   control = glmerControl(optimizer = 'bobyqa', optCtrl = list(maxfun = 100000)),
   data = data %>% filter(origStudy == 'VLAT'),
 )
+accuracy_question_type_sample_vlat = glmer(
+  accuracy ~ origStudy_taskCategorization * recruitmentPlatform + (1 | gameID),
+  family = 'binomial',
+  control = glmerControl(optimizer = 'bobyqa', optCtrl = list(maxfun = 100000)),
+  data = data %>% filter(origStudy == 'VLAT'),
+)
+summary(accuracy_question_type_sample_vlat)
 anova(accuracy_question_type_sample_vlat, accuracy_question_type_sample_vlat_baseline, test = 'LRT')
 emmeans(accuracy_question_type_sample_vlat, pairwise ~ recruitmentPlatform) # larger effect for prolific sample?
 
@@ -932,91 +950,90 @@ ggsave(paste(FIGURES_DIR, 'Modelfit_Factors_RAW.pdf', sep = '/'),
 
 # > FIGURE: Factor analysis loadings ----
 
-# Ordering of items
+
 hierarchicalCategoriesLevels = c(
-  'GGR->bar chart->level 1->item 1',
-  'GGR->bar chart->level 2->item 2',
-  'GGR->bar chart->level 3->item 10',
-  'GGR->bar chart->level 3->item 13',
+  'GGR, bar chart, level 1, item 1',
+  'GGR, bar chart, level 2, item 2',
+  'GGR, bar chart, level 3, item 10',
+  'GGR, bar chart, level 3, item 13',
 
-  'GGR->line chart->level 1->item 5',
-  'GGR->line chart->level 2->item 6',
-  'GGR->line chart->level 3->item 7',
-  'GGR->line chart->level 3->item 11',
-  'GGR->line chart->level 3->item 12',
+  'GGR, line chart, level 1, item 5',
+  'GGR, line chart, level 2, item 6',
+  'GGR, line chart, level 3, item 7',
+  'GGR, line chart, level 3, item 11',
+  'GGR, line chart, level 3, item 12',
 
-  'GGR->pie chart->level 1->item 3',
-  'GGR->pie chart->level 2->item 4',
+  'GGR, pie chart, level 1, item 3',
+  'GGR, pie chart, level 2, item 4',
 
-  'GGR->icon array->level 1->item 8',
-  'GGR->icon array->level 2->item 9',
+  'GGR, icon array, level 1, item 8',
+  'GGR, icon array, level 2, item 9',
 
-  'VLAT->bar chart->determine range->item 21',
-  'VLAT->bar chart->find extremum->item 20',
-  'VLAT->bar chart->make comparisons->item 22',
-  'VLAT->bar chart->retrieve value->item 19',
+  'VLAT, bar chart, determine range, item 21',
+  'VLAT, bar chart, find extremum, item 20',
+  'VLAT, bar chart, make comparisons, item 22',
+  'VLAT, bar chart, retrieve value, item 19',
 
-  'VLAT->stacked bar chart->find extremum->item 25',
-  'VLAT->stacked bar chart->make comparisons->item 27',
-  'VLAT->stacked bar chart->make comparisons->item 28',
-  'VLAT->stacked bar chart->retrieve value->item 23',
-  'VLAT->stacked bar chart->retrieve value->item 24',
+  'VLAT, stacked bar chart, find extremum, item 25',
+  'VLAT, stacked bar chart, make comparisons, item 27',
+  'VLAT, stacked bar chart, make comparisons, item 28',
+  'VLAT, stacked bar chart, retrieve value, item 23',
+  'VLAT, stacked bar chart, retrieve value, item 24',
 
-  'VLAT->normalized stacked bar chart->find extremum->item 30',
-  'VLAT->normalized stacked bar chart->make comparisons->item 31',
-  'VLAT->normalized stacked bar chart->retrieve value->item 29',
+  'VLAT, normalized stacked bar chart, find extremum, item 30',
+  'VLAT, normalized stacked bar chart, make comparisons, item 31',
+  'VLAT, normalized stacked bar chart, retrieve value, item 29',
 
-  'VLAT->line chart->determine range->item 16',
-  'VLAT->line chart->find extremum->item 15',
-  'VLAT->line chart->find correlations trends->item 17',
-  'VLAT->line chart->make comparisons->item 18',
-  'VLAT->line chart->retrieve value->item 14',
+  'VLAT, line chart, determine range, item 16',
+  'VLAT, line chart, find extremum, item 15',
+  'VLAT, line chart, find correlations trends, item 17',
+  'VLAT, line chart, make comparisons, item 18',
+  'VLAT, line chart, retrieve value, item 14',
 
-  'VLAT->area chart->determine range->item 49',
-  'VLAT->area chart->find extremum->item 48',
-  'VLAT->area chart->find correlations trends->item 50',
-  'VLAT->area chart->retrieve value->item 47',
+  'VLAT, area chart, determine range, item 49',
+  'VLAT, area chart, find extremum, item 48',
+  'VLAT, area chart, find correlations trends, item 50',
+  'VLAT, area chart, retrieve value, item 47',
 
-  'VLAT->stacked area chart->find extremum->item 54',
-  'VLAT->stacked area chart->find correlations trends->item 56',
-  'VLAT->stacked area chart->make comparisons->item 57',
-  'VLAT->stacked area chart->make comparisons->item 58',
-  'VLAT->stacked area chart->retrieve value->item 52',
-  'VLAT->stacked area chart->retrieve value->item 53',
+  'VLAT, stacked area chart, find extremum, item 54',
+  'VLAT, stacked area chart, find correlations trends, item 56',
+  'VLAT, stacked area chart, make comparisons, item 57',
+  'VLAT, stacked area chart, make comparisons, item 58',
+  'VLAT, stacked area chart, retrieve value, item 52',
+  'VLAT, stacked area chart, retrieve value, item 53',
 
-  'VLAT->scatterplot->determine range->item 41',
-  'VLAT->scatterplot->find extremum->item 40',
-  'VLAT->scatterplot->find anomolies->item 43',
-  'VLAT->scatterplot->find clusters->item 44',
-  'VLAT->scatterplot->find correlations trends->item 45',
-  'VLAT->scatterplot->make comparisons->item 46',
-  'VLAT->scatterplot->retrieve value->item 39',
+  'VLAT, scatterplot, determine range, item 41',
+  'VLAT, scatterplot, find extremum, item 40',
+  'VLAT, scatterplot, find anomolies, item 43',
+  'VLAT, scatterplot, find clusters, item 44',
+  'VLAT, scatterplot, find correlations trends, item 45',
+  'VLAT, scatterplot, make comparisons, item 46',
+  'VLAT, scatterplot, retrieve value, item 39',
 
-  'VLAT->bubble chart->determine range->item 61',
-  'VLAT->bubble chart->find extremum->item 60',
-  'VLAT->bubble chart->find anomolies->item 63',
-  'VLAT->bubble chart->find clusters->item 64',
-  'VLAT->bubble chart->find correlations trends->item 65',
-  'VLAT->bubble chart->make comparisons->item 66',
-  'VLAT->bubble chart->retrieve value->item 59',
+  'VLAT, bubble chart, determine range, item 61',
+  'VLAT, bubble chart, find extremum, item 60',
+  'VLAT, bubble chart, find anomolies, item 63',
+  'VLAT, bubble chart, find clusters, item 64',
+  'VLAT, bubble chart, find correlations trends, item 65',
+  'VLAT, bubble chart, make comparisons, item 66',
+  'VLAT, bubble chart, retrieve value, item 59',
 
-  'VLAT->histogram->find extremum->item 36',
-  'VLAT->histogram->retrieve value->item 35',
-  'VLAT->histogram->characterize distribution->item 38',
+  'VLAT, histogram, find extremum, item 36',
+  'VLAT, histogram, retrieve value, item 35',
+  'VLAT, histogram, characterize distribution, item 38',
 
-  'VLAT->pie chart->find extremum->item 33',
-  'VLAT->pie chart->make comparisons->item 34',
-  'VLAT->pie chart->retrieve value->item 32',
+  'VLAT, pie chart, find extremum, item 33',
+  'VLAT, pie chart, make comparisons, item 34',
+  'VLAT, pie chart, retrieve value, item 32',
 
-  'VLAT->choropleth->find extremum->item 68',
-  'VLAT->choropleth->make comparisons->item 69',
-  'VLAT->choropleth->retrieve value->item 67',
+  'VLAT, choropleth, find extremum, item 68',
+  'VLAT, choropleth, make comparisons, item 69',
+  'VLAT, choropleth, retrieve value, item 67',
 
-  'VLAT->treemap->find extremum->item 71',
-  'VLAT->treemap->find correlations trends->item 73',
-  'VLAT->treemap->make comparisons->item 72'
+  'VLAT, treemap, find extremum, item 71',
+  'VLAT, treemap, find correlations trends, item 73',
+  'VLAT, treemap, make comparisons, item 72'
 )
-
 
 # Run latent factor model fit with rotation
 fa_rotated = fa(
@@ -1047,7 +1064,7 @@ L_rotated_df = data.frame(
                                           gsub('_', ' ', graph_type, fixed = TRUE),
                                           gsub('_', ' ', q_category, fixed = TRUE),
                                           gsub('_', ' ', Item, fixed = TRUE),
-                                          sep = '->'
+                                          sep = ', '
                                           ),
                                     levels = rev(hierarchicalCategoriesLevels))
   )
@@ -1086,3 +1103,45 @@ ggsave(paste(FIGURES_DIR, 'Factors_HierarchicalCategories_RAW_full.pdf', sep = '
        height = 8,
        device = cairo_pdf
 )
+
+
+
+
+
+# > REVISED FIGURE: Factor analysis loadings with numbers ----
+
+fig_factor_loadings = L_rotated_long %>%
+  ggplot(aes(x = Factors, y = HierarchicalCategories, fill = value)) +
+  geom_tile() +
+  scale_fill_gradient2(
+    low = 'white',
+    high = 'darkgrey',
+    # colors = colMain
+  ) +
+  geom_text(
+    aes(label = round(value, 2)),
+    size = 2,
+    fontface = 'bold'
+  ) +
+  default_plot_theme +
+  scale_x_discrete(
+    name = element_blank()
+  ) +
+  scale_y_discrete(
+    name = element_blank(),
+    # expand = expansion(mult = c(0.1, 0.1))
+  ) +
+  theme(
+    axis.text.y = element_text(size = 8),
+    axis.text.x = element_text(size = 12, angle = -45),
+    legend.position = 'none'
+  )
+
+fig_factor_loadings
+ggsave(paste(FIGURES_DIR, 'FactorLoadingsSupplement.pdf', sep = '/'),
+       fig_factor_loadings,
+       width = 6,
+       height = 10,
+       device = cairo_pdf
+)
+
